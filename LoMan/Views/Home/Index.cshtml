@@ -1,4 +1,5 @@
-﻿@{
+﻿@model LoMan.Models.Dashboard;
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -22,7 +23,7 @@
                 </h5>
                 <div class="card-body">
                     <p class="card-text">
-                        55
+                        @Model.TotalLoans
                     </p>
                 </div>
             </div>
@@ -34,7 +35,7 @@
                 </h5>
                 <div class="card-body">
                     <p class="card-text">
-                        3,46,000
+                        @Model.Tprinciple
                     </p>
                 </div>
 
@@ -47,7 +48,7 @@
                 </h5>
                 <div class="card-body">
                     <p class="card-text">
-                        2,55,000
+                        @Model.Tinterest
                     </p>
                 </div>
 
@@ -64,7 +65,7 @@
                 </h5>
                 <div class="card-body">
                     <p class="card-text">
-                        12
+                        @Model.MonthlyLoans
                     </p>
                 </div>
 
@@ -77,7 +78,7 @@
                 </h5>
                 <div class="card-body">
                     <p class="card-text">
-                        89,000
+                        @Model.Mprinciple
                     </p>
                 </div>
 
@@ -90,7 +91,7 @@
                 </h5>
                 <div class="card-body">
                     <p class="card-text">
-                        1,55,000
+                        @Model.Minterest
                     </p>
                 </div>
 
@@ -107,7 +108,7 @@
                 </h5>
                 <div class="card-body">
                     <p class="card-text">
-                        Card content
+                        @Model.Pincrement
                     </p>
                 </div>
 
@@ -120,7 +121,7 @@
                 </h5>
                 <div class="card-body">
                     <p class="card-text">
-                        Card content
+                        @Model.Iincrement
                     </p>
                 </div>
 
@@ -133,7 +134,7 @@
                 </h5>
                 <div class="card-body">
                     <p class="card-text">
-                        Card content
+                        @Model.MonthlyGrowth
                     </p>
                 </div>
 
@@ -145,7 +146,7 @@
     <br />
     <div class="row">
         <div class="col-md-12 ">
-            <div class="card text-white  bg-alternate">
+            <div class="card text-white  bg-amy-crisp ">
                 <h5 class="card-header">
                     Today's Pending Loans
                 </h5>
@@ -167,7 +168,7 @@
                                 </th>
                             </tr>
                         </thead>
-                        <tbody class="text-white-50">
+                        <tbody class="text-dark">
                             <tr>
                                 <td>1</td>
                                 <td>Tarun</td>

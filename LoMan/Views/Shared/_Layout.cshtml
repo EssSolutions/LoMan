@@ -8,9 +8,9 @@
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/css/main.css" />
 </head>
-<body class="bg-amy-crisp">
+<body class="bg-alternate">
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-sunny-morning  border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-sunny-morning border-bottom box-shadow mb-3">
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">LoMan</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -29,7 +29,7 @@
                                     Add New Loan
                                 </a>
                                 <div class="dropdown-menu bg-sunny-morning" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" href="#">Monthly Interest</a>
+                                    <a class="dropdown-item" asp-controller="Loans" asp-action="Create">Monthly Interest</a>
                                     <a class="dropdown-item" href="#">Weekly Interest</a>
                                 </div>
                             </div>
