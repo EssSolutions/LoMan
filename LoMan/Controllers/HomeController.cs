@@ -6,30 +6,21 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using LoMan.Models;
-using LoMan.Data;
-using LoMan.ViewModels;
-using Microsoft.EntityFrameworkCore;
 
 namespace LoMan.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly ApplicationDbContext _db;
 
-        public HomeController(ILogger<HomeController> logger,ApplicationDbContext db)
+        public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
-            _db = db;
         }
 
         public IActionResult Index()
         {
-            _ = _db.Database.ExecuteSqlRaw("EXEC Set_Dashboard");
-            DashboardVM dashboardVM = new DashboardVM();
-            dashboardVM.Loans = _db.Loans.Where(l => l.Rdate == DateTime.Today).ToList();
-            dashboardVM.dashboard = _db.Dashboard.FirstOrDefault();
-            return View(dashboardVM);
+            return View();
         }
 
         public IActionResult Privacy()

@@ -1,5 +1,4 @@
-﻿@model LoMan.ViewModels.DashboardVM;
-@{
+﻿@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -7,7 +6,7 @@
 
     <br />
     <div class="row">
-        <div class="col-md-12 text-white">
+        <div class="col-md-12">
             <h3>
                 Analytics Dashboard
             </h3>
@@ -17,81 +16,38 @@
     <br />
     <div class="row">
         <div class="col-md-4">
-            <div class="card text-white bg-midnight-bloom">
+            <div class="card text-white bg-success">
                 <h5 class="card-header">
-                    Total No Of Loans
+                    Card title
                 </h5>
                 <div class="card-body">
                     <p class="card-text">
-                        @Model.dashboard.TotalLoans
+                        Card content
                     </p>
                 </div>
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card text-white bg-arielle-smile">
+            <div class="card text-white bg-info">
                 <h5 class="card-header">
-                    Total Principle
+                    Card title
                 </h5>
                 <div class="card-body">
                     <p class="card-text">
-                        @Model.dashboard.Tprinciple
-                    </p>
-                </div>
-
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card text-white bg-grow-early">
-                <h5 class="card-header">
-                    Total Interest
-                </h5>
-                <div class="card-body">
-                    <p class="card-text">
-                        @Model.dashboard.Tinterest
-                    </p>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-    <br />
-    <div class="row">
-        <div class="col-md-4">
-            <div class="card text-white bg-focus">
-                <h5 class="card-header">
-                    Total Loans Given This Month
-                </h5>
-                <div class="card-body">
-                    <p class="card-text">
-                        @Model.dashboard.MonthlyLoans
+                        Card content
                     </p>
                 </div>
 
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card text-white bg-happy-fisher">
+            <div class="card text-white bg-primary">
                 <h5 class="card-header">
-                    Total Principle Recieved This Month
+                    Card title
                 </h5>
                 <div class="card-body">
                     <p class="card-text">
-                        @Model.dashboard.Mprinciple
-                    </p>
-                </div>
-
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card text-white bg-happy-green">
-                <h5 class="card-header">
-                    Total Interest Recieved This Month
-                </h5>
-                <div class="card-body">
-                    <p class="card-text">
-                        @Model.dashboard.Minterest
+                        Card content
                     </p>
                 </div>
 
@@ -102,39 +58,82 @@
     <br />
     <div class="row">
         <div class="col-md-4">
-            <div class="card text-white bg-royal">
+            <div class="card text-white bg-warning">
                 <h5 class="card-header">
-                    Principle Incerement
+                    Card title
                 </h5>
                 <div class="card-body">
                     <p class="card-text">
-                        @Model.dashboard.Pincrement
+                        Card content
                     </p>
                 </div>
 
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card text-white bg-malibu-beach">
+            <div class="card text-white bg-secondary">
+                <h5 class="card-header">
+                    Card title
+                </h5>
+                <div class="card-body">
+                    <p class="card-text">
+                        Card content
+                    </p>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-success">
+                <h5 class="card-header">
+                    Card title
+                </h5>
+                <div class="card-body">
+                    <p class="card-text">
+                        Card content
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <br />
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card text-white bg-danger">
+                <h5 class="card-header">
+                    Card title
+                </h5>
+                <div class="card-body">
+                    <p class="card-text">
+                        Card content
+                    </p>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-dark">
                 <h5 class="card-header ">
-                    Interest Increment
+                    Card title
                 </h5>
                 <div class="card-body">
                     <p class="card-text">
-                        @Model.dashboard.Iincrement
+                        Card content
                     </p>
                 </div>
 
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card text-white bg-tempting-azure">
+            <div class="card text-white bg-info">
                 <h5 class="card-header">
-                    Monthly Growth
+                    Card title
                 </h5>
                 <div class="card-body">
                     <p class="card-text">
-                        @Model.dashboard.MonthlyGrowth
+                        Card content
                     </p>
                 </div>
 
@@ -142,51 +141,30 @@
         </div>
     </div>
 
-
+    
     <br />
     <div class="row">
-        <div class="col-md-12 ">
-            <div class="card text-white  bg-amy-crisp ">
-                <h5 class="card-header">
-                    Today's Pending Loans
-                </h5>
-                <div class="card-body">
-                    <table class="table table-borderless " style=" border-collapse: separate;  border-spacing: 0 1em;">
-                        <thead>
-                            <tr>
-                                <th>
-                                    #
-                                </th>
-                                <th>
-                                    Name
-                                </th>
-                                <th>
-                                    Issue Date
-                                </th>
-                                <th>
-                                    Status
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody class="text-dark">
-                            @foreach (Loan loan in @Model.Loans)
-                            {
-                                int i = 1;
-                                <tr>
-                                    <td>@i</td>
-                                    <td>@loan.Name</td>
-                                    <td>@loan.Idate</td>
-                                    <td class="badge badge-danger">@loan.Status</td>
-                                </tr>
+        <div class="col-md-12">
+            <h5>Today's Pending Loans</h5>
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>
+                            #
+                        </th>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Date Taken
+                        </th>
+                        <th>
+                            Status
+                        </th>
+                    </tr>
+                </thead>
 
-                            }
-                        </tbody>
-                    </table>
-                </div>
-
-            </div>
-
-
+            </table>
         </div>
     </div>
 </div>

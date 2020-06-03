@@ -44,45 +44,6 @@ namespace LoMan.Data.Migrations
                     b.ToTable("Analytics");
                 });
 
-            modelBuilder.Entity("LoMan.Models.Dashboard", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Iincrement")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Minterest")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MonthlyGrowth")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MonthlyLoans")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Mprinciple")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Pincrement")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Tinterest")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TotalLoans")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Tprinciple")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Dashboard");
-                });
-
             modelBuilder.Entity("LoMan.Models.Loan", b =>
                 {
                     b.Property<string>("Id")
