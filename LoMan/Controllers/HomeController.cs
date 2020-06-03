@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using LoMan.Models;
 using LoMan.Data;
+using LoMan.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace LoMan.Controllers
@@ -24,8 +25,11 @@ namespace LoMan.Controllers
 
         public IActionResult Index()
         {
-            _ = _db.Dashboard.FromSqlRaw("EXECUTE dbo.Set_Dashboard").ToList();
-           return View(_db.Dashboard.FirstOrDefault());
+            _ = _db.Database.ExecuteSqlRaw("EXEC Set_Dashboard");
+            DashboardVM dashboardVM = new DashboardVM();
+            dashboardVM.Loans = _db.Loans.Where(l => l.Rdate == DateTime.Today).ToList();
+            dashboardVM.dashboard = _db.Dashboard.FirstOrDefault();
+            return View(dashboardVM);
         }
 
         public IActionResult Privacy()

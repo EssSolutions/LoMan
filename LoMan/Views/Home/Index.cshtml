@@ -1,4 +1,4 @@
-﻿@model LoMan.Models.Dashboard;
+﻿@model LoMan.ViewModels.DashboardVM;
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -23,7 +23,7 @@
                 </h5>
                 <div class="card-body">
                     <p class="card-text">
-                        @Model.TotalLoans
+                        @Model.dashboard.TotalLoans
                     </p>
                 </div>
             </div>
@@ -35,7 +35,7 @@
                 </h5>
                 <div class="card-body">
                     <p class="card-text">
-                        @Model.Tprinciple
+                        @Model.dashboard.Tprinciple
                     </p>
                 </div>
 
@@ -48,7 +48,7 @@
                 </h5>
                 <div class="card-body">
                     <p class="card-text">
-                        @Model.Tinterest
+                        @Model.dashboard.Tinterest
                     </p>
                 </div>
 
@@ -61,11 +61,11 @@
         <div class="col-md-4">
             <div class="card text-white bg-focus">
                 <h5 class="card-header">
-                   Total Loans Given This Month
+                    Total Loans Given This Month
                 </h5>
                 <div class="card-body">
                     <p class="card-text">
-                        @Model.MonthlyLoans
+                        @Model.dashboard.MonthlyLoans
                     </p>
                 </div>
 
@@ -78,7 +78,7 @@
                 </h5>
                 <div class="card-body">
                     <p class="card-text">
-                        @Model.Mprinciple
+                        @Model.dashboard.Mprinciple
                     </p>
                 </div>
 
@@ -91,7 +91,7 @@
                 </h5>
                 <div class="card-body">
                     <p class="card-text">
-                        @Model.Minterest
+                        @Model.dashboard.Minterest
                     </p>
                 </div>
 
@@ -108,7 +108,7 @@
                 </h5>
                 <div class="card-body">
                     <p class="card-text">
-                        @Model.Pincrement
+                        @Model.dashboard.Pincrement
                     </p>
                 </div>
 
@@ -121,7 +121,7 @@
                 </h5>
                 <div class="card-body">
                     <p class="card-text">
-                        @Model.Iincrement
+                        @Model.dashboard.Iincrement
                     </p>
                 </div>
 
@@ -134,7 +134,7 @@
                 </h5>
                 <div class="card-body">
                     <p class="card-text">
-                        @Model.MonthlyGrowth
+                        @Model.dashboard.MonthlyGrowth
                     </p>
                 </div>
 
@@ -161,7 +161,7 @@
                                     Name
                                 </th>
                                 <th>
-                                    Date Taken
+                                    Issue Date
                                 </th>
                                 <th>
                                     Status
@@ -169,25 +169,17 @@
                             </tr>
                         </thead>
                         <tbody class="text-dark">
-                            <tr>
-                                <td>1</td>
-                                <td>Tarun</td>
-                                <td>29/05/2020</td>
-                                <td class="badge badge-danger">Pending</td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>Tarun</td>
-                                <td>29/05/2020</td>
-                                <td class="badge badge-danger">Pending</td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>Tarun</td>
-                                <td>29/05/2020</td>
-                                <td class="badge badge-danger">Pending</td>
-                            </tr>
+                            @foreach (Loan loan in @Model.Loans)
+                            {
+                                int i = 1;
+                                <tr>
+                                    <td>@i</td>
+                                    <td>@loan.Name</td>
+                                    <td>@loan.Idate</td>
+                                    <td class="badge badge-danger">@loan.Status</td>
+                                </tr>
 
+                            }
                         </tbody>
                     </table>
                 </div>
