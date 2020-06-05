@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<LoMan.Models.Loan>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Loans List";
 }
 
 <h1>List Of All Loans</h1>
@@ -12,7 +12,7 @@
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
-            </th>                                 
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Amount)
             </th>
@@ -21,7 +21,7 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Rdate)
-            </th>            
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Status)
             </th>
@@ -29,52 +29,57 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
 
-            <td>
-                @Html.DisplayFor(modelItem => item.Amount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Idate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Rdate)
-            </td>
-            @if (item.Status.Equals("Pending"))
-            {
-                <td class="badge badge-danger">
-                    @Html.DisplayFor(modelItem => item.Status)
+                <td>
+                    @Html.DisplayFor(modelItem => item.Amount)
                 </td>
-            }
-            else if (item.Status.Equals("Interest Paid"))
-            {
-                <td class="badge badge-warning">
-                    @Html.DisplayFor(modelItem => item.Status)
+                <td>
+                    @Html.DisplayFor(modelItem => item.Idate)
                 </td>
-            }
-            else if (item.Status.Equals("Principle Paid"))
-            {
-                <td class="badge badge-info">
-                    @Html.DisplayFor(modelItem => item.Status)
+                <td>
+                    @Html.DisplayFor(modelItem => item.Rdate)
                 </td>
-            }
-            else if (item.Status.Equals("Paid"))
-            {
-                <td class="badge badge-success">
-                    @Html.DisplayFor(modelItem => item.Status)
-                </td>
-            }
+                @if (item.Status.Equals("Pending"))
+                {
+                    <td class="badge badge-danger -center">
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                }
+                else if (item.Status.Equals("Interest Paid"))
+                {
+                    <td class="badge badge-warning -center">
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                }
+                else if (item.Status.Equals("Principle Paid"))
+                {
+                    <td class="badge badge-info -center">
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                }
+                else if (item.Status.Equals("Paid"))
+                {
+                    <td class="badge badge-success align-self-center">
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                }
 
-            <td>
-                <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">Details</a>
-                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+                <td>
+                    @if (!item.Status.Equals("Paid"))
+                    {
+                        <a class="btn btn-secondary" asp-action="Recover" asp-route-id="@item.Id">Recover</a>
+                    }
+                    <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

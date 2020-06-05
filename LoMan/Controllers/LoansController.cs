@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LoMan.Data;
 using LoMan.Models;
+using LoMan.ViewModels;
 
 namespace LoMan.Controllers
 {
@@ -23,6 +24,13 @@ namespace LoMan.Controllers
         public async Task<IActionResult> Index()
         {
             return View(await _context.Loans.OrderBy(l => l.Name).ToListAsync());
+        }
+
+        // GET: Loans/Pending
+        public async Task<IActionResult> Pending()
+        {
+            var PList = _context.Loans.Where(l => l.Status.Equals("Pending"));
+            return View(await PList.ToListAsync());
         }
 
         // GET: Loans/Details/5
@@ -143,6 +151,84 @@ namespace LoMan.Controllers
             {
                 try
                 {
+                    _context.Update(loan);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!LoanExists(loan.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(loan);
+        }
+
+        // GET: Loans/Recover/5
+        public async Task<IActionResult> Recover(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            RecoveryVM recoveryVM = new RecoveryVM();
+            recoveryVM.loan = await _context.Loans.FindAsync(id);
+            if (recoveryVM.loan == null)
+            {
+                return NotFound();
+            }
+            return View(recoveryVM);
+        }
+
+        // POST: Loans/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Recover(string id, [Bind("Id,Name,Address,Phone,Asset,Principle,Interest,Rate,Amount,Idate,Rdate,Penalty,Times,Period,Status")] Loan loan,string Type)
+        {
+            if (id != loan.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    loan = await _context.Loans.FindAsync(id);
+                    Recoveries recovery = new Recoveries();
+                    recovery.Id = Guid.NewGuid().ToString();
+                    recovery.Date = DateTime.Today;
+                    recovery.Name = loan.Name;
+                    if (Type.Equals("Interest"))
+                    {
+                        recovery.Interest = loan.Interest;
+                        loan.Status = "Interest Paid";
+
+                    }
+                    else if (Type.Equals("Principle"))
+                    {
+                        recovery.Principle = loan.Principle;
+                        loan.Status = "Principle Paid";
+                    }
+                    else if(Type.Equals("Complete"))
+                    {
+                        recovery.Interest = loan.Interest;
+                        recovery.Principle = loan.Principle;
+                        loan.Status = "Paid";
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException("Invalid Recovery Type");
+                    }
+                    _context.Add(recovery);
                     _context.Update(loan);
                     await _context.SaveChangesAsync();
                 }
