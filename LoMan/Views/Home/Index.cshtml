@@ -107,9 +107,10 @@
                     Principle Incerement
                 </h5>
                 <div class="card-body">
-                    <p class="card-text">
-                        @Model.dashboard.Pincrement
-                    </p>
+                    <div class="progress">
+                        <div class="progress-bar bg-danger" role="progressbar" style="width: @Math.Abs(Model.dashboard.Pincrement)%;" aria-valuenow="@Math.Abs(Model.dashboard.Pincrement)" aria-valuemin="0" aria-valuemax="100">@Model.dashboard.Pincrement %</div>
+                    </div>
+                    
                 </div>
 
             </div>
@@ -120,9 +121,9 @@
                     Interest Increment
                 </h5>
                 <div class="card-body">
-                    <p class="card-text">
-                        @Model.dashboard.Iincrement
-                    </p>
+                    <div class="progress">
+                        <div class="progress-bar bg-danger" role="progressbar" style="width: @Math.Abs(Model.dashboard.Iincrement)%;" aria-valuenow="@Math.Abs(Model.dashboard.Iincrement)" aria-valuemin="0" aria-valuemax="100">@Model.dashboard.Iincrement %</div>
+                    </div>
                 </div>
 
             </div>
@@ -133,9 +134,12 @@
                     Monthly Growth
                 </h5>
                 <div class="card-body">
-                    <p class="card-text">
-                        @Model.dashboard.MonthlyGrowth
-                    </p>
+                    <div class="progress">
+                        @{
+                            Model.dashboard.MonthlyGrowth *= -1; 
+                         }
+                        <div class="progress-bar bg-danger" role="progressbar" style="width: @Math.Abs(Model.dashboard.MonthlyGrowth)%;" aria-valuenow="@Math.Abs(Model.dashboard.MonthlyGrowth)" aria-valuemin="0" aria-valuemax="100">@Model.dashboard.MonthlyGrowth %</div>
+                    </div>
                 </div>
 
             </div>

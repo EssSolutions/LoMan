@@ -22,7 +22,7 @@ namespace LoMan.Controllers
         // GET: Loans
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Loans.ToListAsync());
+            return View(await _context.Loans.OrderBy(l => l.Name).ToListAsync());
         }
 
         // GET: Loans/Details/5
@@ -43,6 +43,45 @@ namespace LoMan.Controllers
             return View(loan);
         }
 
+        // GET: Loans/CreateWeekly
+        public IActionResult CreateWeekly()
+        {
+            return View();
+        }
+
+        // POST: Loans/CreateWeekly
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateWeekly([Bind("Id,Name,Address,Phone,Asset,Principle,Interest,Rate,Amount,Idate,Rdate,Penalty,Times,Period,Status")] Loan loan)
+        {
+            if (ModelState.IsValid)
+            {
+
+                float Principle = loan.Principle / loan.Times;
+                float Interest = ((loan.Principle * loan.Rate) / 100) / loan.Times;
+                double Period = loan.Period;
+                for (int i = 0; i < loan.Times; i++)
+                {
+                    loan.Id = Guid.NewGuid().ToString();
+                    loan.Rdate = loan.Idate.AddDays(Period);
+                    loan.Amount = Principle + Interest;
+                    loan.Interest = Interest;
+                    loan.Principle = Principle;
+                    TimeSpan Diff = loan.Rdate.Subtract(loan.Idate);
+                    loan.Period = Diff.Days;
+                    loan.Status = "Pending";
+                    _context.Add(loan);
+                    await _context.SaveChangesAsync();
+                    loan.Idate = loan.Idate.AddDays(Period);
+                }
+                
+                return RedirectToAction(nameof(Index));
+            }
+            return View(loan);
+        }
+
         // GET: Loans/Create
         public IActionResult Create()
         {
@@ -60,6 +99,11 @@ namespace LoMan.Controllers
             {
                 loan.Id = Guid.NewGuid().ToString();
                 loan.Interest = (loan.Principle * loan.Rate) / 100;
+                loan.Amount = loan.Principle + loan.Interest;
+                TimeSpan Period = loan.Rdate.Subtract(loan.Idate);
+                loan.Period = Period.Days;
+                loan.Status = "Pending";
+                loan.Times = 1;
                 _context.Add(loan);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
