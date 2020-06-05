@@ -1,37 +1,17 @@
 ﻿@model IEnumerable<LoMan.Models.Loan>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Loans List";
 }
 
-<h1>Index</h1>
+<h1>List Of All Loans</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+<br />
+<table class="table bg-amy-crisp table-borderless">
     <thead>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Address)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Phone)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Asset)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Principle)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Interest)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Rate)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Amount)
@@ -43,71 +23,63 @@
                 @Html.DisplayNameFor(model => model.Rdate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Penalty)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Times)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Period)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Status)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Address)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Phone)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Asset)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Principle)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Interest)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Rate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Amount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Idate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Rdate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Penalty)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Times)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Period)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Amount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Idate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Rdate)
+                </td>
+                @if (item.Status.Equals("Pending"))
+                {
+                    <td class="badge badge-danger -center">
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                }
+                else if (item.Status.Equals("Interest Paid"))
+                {
+                    <td class="badge badge-warning -center">
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                }
+                else if (item.Status.Equals("Principle Paid"))
+                {
+                    <td class="badge badge-info -center">
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                }
+                else if (item.Status.Equals("Paid"))
+                {
+                    <td class="badge badge-success align-self-center">
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                }
+
+                <td>
+                    @if (!item.Status.Equals("Paid"))
+                    {
+                        <a class="btn btn-secondary" asp-action="Recover" asp-route-id="@item.Id">Recover</a>
+                    }
+                    <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
