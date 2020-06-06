@@ -1,5 +1,3 @@
-using System;
-
 namespace LoMan.Models
 {
     public class ErrorViewModel
