@@ -1,10 +1,10 @@
-﻿document.getElementById('Name').addEventListener("keyup", Search)
+﻿document.getElementById('Search-Input').addEventListener("keyup", Search)
 
 function Search() {
 	let input, filter, table, tr, td, i, txtValue;
-	input = document.getElementById("Name");
+	input = document.getElementById("Search-Input");
 	filter = input.value.toUpperCase();
-	table = document.getElementById("loans");
+	table = document.getElementById("table-body");
 	tr = table.getElementsByTagName("tr");
 
 	// Loop through all table rows, and hide those who don't match the search query

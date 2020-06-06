@@ -4,15 +4,24 @@
     ViewData["Title"] = "Pending";
 }
 
-<h1>List Of Pending Loans</h1>
 
+<div class="row">
+    <div class="col-md-6">
+        <h1>List Of Pending Loans</h1>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <input class="form-control" type="text" id="Search-Input" placeholder="Enter Name To Search" />
+        </div>
+    </div>
+</div>
 <br />
-<table class="table bg-amy-crisp table-borderless">
+<table class="table bg-amy-crisp table-borderless" >
     <thead>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
-            </th>                                 
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Amount)
             </th>
@@ -21,61 +30,65 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Rdate)
-            </th>            
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Status)
             </th>
             <th></th>
         </tr>
     </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
+    <tbody id="table-body">
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
 
-            <td>
-                @Html.DisplayFor(modelItem => item.Amount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Idate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Rdate)
-            </td>
-            @if (item.Status.Equals("Pending"))
-            {
-                <td class="badge badge-danger">
-                    @Html.DisplayFor(modelItem => item.Status)
+                <td>
+                    @Html.DisplayFor(modelItem => item.Amount)
                 </td>
-            }
-            else if (item.Status.Equals("Interest Paid"))
-            {
-                <td class="badge badge-warning">
-                    @Html.DisplayFor(modelItem => item.Status)
+                <td>
+                    @Html.DisplayFor(modelItem => item.Idate)
                 </td>
-            }
-            else if (item.Status.Equals("Principle Paid"))
-            {
-                <td class="badge badge-info">
-                    @Html.DisplayFor(modelItem => item.Status)
+                <td>
+                    @Html.DisplayFor(modelItem => item.Rdate)
                 </td>
-            }
-            else if (item.Status.Equals("Paid"))
-            {
-                <td class="badge badge-success">
-                    @Html.DisplayFor(modelItem => item.Status)
-                </td>
-            }
+                @if (item.Status.Equals("Pending"))
+                {
+                    <td class="badge badge-danger">
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                }
+                else if (item.Status.Equals("Interest Paid"))
+                {
+                    <td class="badge badge-warning">
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                }
+                else if (item.Status.Equals("Principle Paid"))
+                {
+                    <td class="badge badge-info">
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                }
+                else if (item.Status.Equals("Paid"))
+                {
+                    <td class="badge badge-success">
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                }
 
-            <td>
-                <a class="btn btn-secondary" asp-action="Recover" asp-route-id="@item.Id">Recover</a>
-                <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">Details</a>
-                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+                <td>
+                    <a class="btn btn-secondary" asp-action="Recover" asp-route-id="@item.Id">Recover</a>
+                    <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+@section Scripts {
+    <script  src="~/js/filter.js"></script>
+}

@@ -3,8 +3,17 @@
 @{
     ViewData["Title"] = "Loans List";
 }
+<div class="row">
+    <div class="col-md-6">
+        <h1>List Of All Loans</h1>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <input class="form-control" type="text" id="Search-Input" placeholder="Enter Name To Search" />
+        </div>
+    </div>
+</div>
 
-<h1>List Of All Loans</h1>
 
 <br />
 <table class="table bg-amy-crisp table-borderless">
@@ -28,7 +37,7 @@
             <th></th>
         </tr>
     </thead>
-    <tbody>
+    <tbody id="table-body">
         @foreach (var item in Model)
         {
             <tr>
@@ -83,3 +92,6 @@
         }
     </tbody>
 </table>
+@section Scripts {
+    <script  src="~/js/filter.js"></script>
+}
