@@ -1,10 +1,13 @@
-﻿using LoMan.Data;
-using LoMan.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using LoMan.Data;
+using LoMan.Models;
+using LoMan.ViewModels;
 
 namespace LoMan.Controllers
 {
@@ -20,7 +23,14 @@ namespace LoMan.Controllers
         // GET: Loans
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Loans.ToListAsync());
+            return View(await _context.Loans.OrderBy(l => l.Name).ToListAsync());
+        }
+
+        // GET: Loans/Pending
+        public async Task<IActionResult> Pending()
+        {
+            var PList = _context.Loans.Where(l => l.Status.Equals("Pending"));
+            return View(await PList.ToListAsync());
         }
 
         // GET: Loans/Details/5
@@ -41,6 +51,45 @@ namespace LoMan.Controllers
             return View(loan);
         }
 
+        // GET: Loans/CreateWeekly
+        public IActionResult CreateWeekly()
+        {
+            return View();
+        }
+
+        // POST: Loans/CreateWeekly
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateWeekly([Bind("Id,Name,Address,Phone,Asset,Principle,Interest,Rate,Amount,Idate,Rdate,Penalty,Times,Period,Status")] Loan loan)
+        {
+            if (ModelState.IsValid)
+            {
+
+                float Principle = loan.Principle / loan.Times;
+                float Interest = ((loan.Principle * loan.Rate) / 100) / loan.Times;
+                double Period = loan.Period;
+                for (int i = 0; i < loan.Times; i++)
+                {
+                    loan.Id = Guid.NewGuid().ToString();
+                    loan.Rdate = loan.Idate.AddDays(Period);
+                    loan.Amount = Principle + Interest;
+                    loan.Interest = Interest;
+                    loan.Principle = Principle;
+                    TimeSpan Diff = loan.Rdate.Subtract(loan.Idate);
+                    loan.Period = Diff.Days;
+                    loan.Status = "Pending";
+                    _context.Add(loan);
+                    await _context.SaveChangesAsync();
+                    loan.Idate = loan.Idate.AddDays(Period);
+                }
+                
+                return RedirectToAction(nameof(Index));
+            }
+            return View(loan);
+        }
+
         // GET: Loans/Create
         public IActionResult Create()
         {
@@ -58,6 +107,11 @@ namespace LoMan.Controllers
             {
                 loan.Id = Guid.NewGuid().ToString();
                 loan.Interest = (loan.Principle * loan.Rate) / 100;
+                loan.Amount = loan.Principle + loan.Interest;
+                TimeSpan Period = loan.Rdate.Subtract(loan.Idate);
+                loan.Period = Period.Days;
+                loan.Status = "Pending";
+                loan.Times = 1;
                 _context.Add(loan);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -97,6 +151,84 @@ namespace LoMan.Controllers
             {
                 try
                 {
+                    _context.Update(loan);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!LoanExists(loan.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(loan);
+        }
+
+        // GET: Loans/Recover/5
+        public async Task<IActionResult> Recover(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            RecoveryVM recoveryVM = new RecoveryVM();
+            recoveryVM.loan = await _context.Loans.FindAsync(id);
+            if (recoveryVM.loan == null)
+            {
+                return NotFound();
+            }
+            return View(recoveryVM);
+        }
+
+        // POST: Loans/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Recover(string id, [Bind("Id,Name,Address,Phone,Asset,Principle,Interest,Rate,Amount,Idate,Rdate,Penalty,Times,Period,Status")] Loan loan,string Type)
+        {
+            if (id != loan.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    loan = await _context.Loans.FindAsync(id);
+                    Recoveries recovery = new Recoveries();
+                    recovery.Id = Guid.NewGuid().ToString();
+                    recovery.Date = DateTime.Today;
+                    recovery.Name = loan.Name;
+                    if (Type.Equals("Interest"))
+                    {
+                        recovery.Interest = loan.Interest;
+                        loan.Status = "Interest Paid";
+
+                    }
+                    else if (Type.Equals("Principle"))
+                    {
+                        recovery.Principle = loan.Principle;
+                        loan.Status = "Principle Paid";
+                    }
+                    else if(Type.Equals("Complete"))
+                    {
+                        recovery.Interest = loan.Interest;
+                        recovery.Principle = loan.Principle;
+                        loan.Status = "Paid";
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException("Invalid Recovery Type");
+                    }
+                    _context.Add(recovery);
                     _context.Update(loan);
                     await _context.SaveChangesAsync();
                 }

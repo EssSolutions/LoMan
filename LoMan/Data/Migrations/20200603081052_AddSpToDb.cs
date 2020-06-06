@@ -52,7 +52,7 @@ BEGIN
 
         SET @Iperc = ((@Cinterest - @Pinterest)/@Pinterest)*100;
     	SET @Pperc = ((@Cprinciple - @Pprinciple)/@Pprinciple)*100;
-    	SET @Gperc = @Prev_perc - @Iperc;
+    	SET @Gperc = ABS(@Prev_perc) - ABS(@Iperc);
         SELECT @Check = COUNT(*) 
         FROM Analytics
         WHERE Month = (MONTH(GETDATE())) AND Year = (YEAR(GETDATE()));

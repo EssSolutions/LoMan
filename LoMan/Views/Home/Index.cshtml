@@ -1,4 +1,8 @@
-﻿@model LoMan.ViewModels.DashboardVM;
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@model LoMan.ViewModels.DashboardVM;
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -17,7 +21,7 @@
     <br />
     <div class="row">
         <div class="col-md-4">
-            <div class="card text-white bg-midnight-bloom">
+            <div class="card text-white bg-night-sky">
                 <h5 class="card-header">
                     Total No Of Loans
                 </h5>
@@ -59,7 +63,7 @@
     <br />
     <div class="row">
         <div class="col-md-4">
-            <div class="card text-white bg-focus">
+            <div class="card text-white bg-midnight-bloom">
                 <h5 class="card-header">
                     Total Loans Given This Month
                 </h5>
@@ -107,9 +111,10 @@
                     Principle Incerement
                 </h5>
                 <div class="card-body">
-                    <p class="card-text">
-                        @Model.dashboard.Pincrement
-                    </p>
+                    <div class="progress">
+                        <div class="progress-bar bg-danger" role="progressbar" style="width: @Math.Abs(Model.dashboard.Pincrement)%;" aria-valuenow="@Math.Abs(Model.dashboard.Pincrement)" aria-valuemin="0" aria-valuemax="100">@Model.dashboard.Pincrement %</div>
+                    </div>
+
                 </div>
 
             </div>
@@ -120,22 +125,25 @@
                     Interest Increment
                 </h5>
                 <div class="card-body">
-                    <p class="card-text">
-                        @Model.dashboard.Iincrement
-                    </p>
+                    <div class="progress">
+                        <div class="progress-bar bg-danger" role="progressbar" style="width: @Math.Abs(Model.dashboard.Iincrement)%;" aria-valuenow="@Math.Abs(Model.dashboard.Iincrement)" aria-valuemin="0" aria-valuemax="100">@Model.dashboard.Iincrement %</div>
+                    </div>
                 </div>
 
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card text-white bg-tempting-azure">
+            <div class="card text-white bg-happy-itmeo">
                 <h5 class="card-header">
                     Monthly Growth
                 </h5>
                 <div class="card-body">
-                    <p class="card-text">
-                        @Model.dashboard.MonthlyGrowth
-                    </p>
+                    <div class="progress">
+                        @{
+                            Model.dashboard.MonthlyGrowth *= -1;
+                        }
+                        <div class="progress-bar bg-danger" role="progressbar" style="width: @Math.Abs(Model.dashboard.MonthlyGrowth)%;" aria-valuenow="@Math.Abs(Model.dashboard.MonthlyGrowth)" aria-valuemin="0" aria-valuemax="100">@Model.dashboard.MonthlyGrowth %</div>
+                    </div>
                 </div>
 
             </div>
@@ -166,6 +174,7 @@
                                 <th>
                                     Status
                                 </th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody class="text-dark">
@@ -176,7 +185,37 @@
                                     <td>@i</td>
                                     <td>@loan.Name</td>
                                     <td>@loan.Idate</td>
-                                    <td class="badge badge-danger">@loan.Status</td>
+                                    @if (loan.Status.Equals("Pending"))
+                                    {
+                                        <td class="badge badge-danger -center">
+                                            @Html.DisplayFor(modelItem => loan.Status)
+                                        </td>
+                                    }
+                                    else if (loan.Status.Equals("Interest Paid"))
+                                    {
+                                        <td class="badge badge-warning -center">
+                                            @Html.DisplayFor(modelItem => loan.Status)
+                                        </td>
+                                    }
+                                    else if (loan.Status.Equals("Principle Paid"))
+                                    {
+                                        <td class="badge badge-info -center">
+                                            @Html.DisplayFor(modelItem => loan.Status)
+                                        </td>
+                                    }
+                                    else if (loan.Status.Equals("Paid"))
+                                    {
+                                        <td class="badge badge-success align-self-center">
+                                            @Html.DisplayFor(modelItem => loan.Status)
+                                        </td>
+                                    }
+
+                                    <td>
+                                        <a class="btn btn-secondary" asp-action="Recover" asp-route-id="@loan.Id">Recover</a>
+                                        <a class="btn btn-warning" asp-action="Edit" asp-route-id="@loan.Id">Edit</a>
+                                        <a class="btn btn-info" asp-action="Details" asp-route-id="@loan.Id">Details</a>
+                                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@loan.Id">Delete</a>
+                                    </td>
                                 </tr>
 
                             }
