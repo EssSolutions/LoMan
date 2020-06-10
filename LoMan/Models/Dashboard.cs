@@ -12,9 +12,9 @@ namespace LoMan.Models
         public int MonthlyLoans { get; set; }
         public int Mprinciple { get; set; }
         public int Minterest { get; set; }
-        public int Pincrement { get; set; }
-        public int Iincrement { get; set; }
-        public int MonthlyGrowth { get; set; }
+        public int PreviousLoans { get; set; }
+        public int Printerest { get; set; }
+        public int Prprinciple { get; set; }
 
     }
 }

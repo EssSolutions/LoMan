@@ -9,6 +9,8 @@
   <ItemGroup>
     <Compile Remove="Data\Migrations\20200602205235_TablesToDb.cs" />
     <Compile Remove="Data\Migrations\20200602205235_TablesToDb.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200610173715_AddedPenaltyToRecovery.cs" />
+    <Compile Remove="Data\Migrations\20200610173715_AddedPenaltyToRecovery.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

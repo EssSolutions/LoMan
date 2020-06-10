@@ -24,16 +24,13 @@ DECLARE
         @Cinterest float,
         @Cprinciple float,
         @Tprinciple float,
-        @Tinterest float,
-        @Iperc float,
-        @Pperc float,
-        @Prev_perc float,
-        @Gperc float,
+        @Tinterest float,        
+        @PCount int,
         @TCount int,
         @MCount int,
         @Check int
 BEGIN
-        SELECT @Pprinciple = Principle , @Pinterest = Interest , @Prev_perc = Ipercent
+        SELECT @Pprinciple = Principle , @Pinterest = Interest 
         FROM Analytics
         WHERE Month = (MONTH(GETDATE())-1) AND Year = YEAR(GETDATE());
 
@@ -46,23 +43,22 @@ BEGIN
 
         SELECT @TCount = COUNT(*) FROM Loans;
 
-        SELECT @MCount = COUNT(*) FROM Loans WHERE MONTH(Idate) = (MONTH(GETDATE())) AND YEAR(Idate) = (YEAR(GETDATE()));
+        SELECT @PCount = COUNT(*) FROM Loans WHERE MONTH(Idate) = (MONTH(GETDATE())-1) AND YEAR(Idate) = (YEAR(GETDATE()));
 
-        SET @Check = 0;
+		SELECT @MCount = COUNT(*) FROM Loans WHERE MONTH(Idate) = (MONTH(GETDATE())) AND YEAR(Idate) = (YEAR(GETDATE()));
 
-        SET @Iperc = ((@Cinterest - @Pinterest)/@Pinterest)*100;
-    	SET @Pperc = ((@Cprinciple - @Pprinciple)/@Pprinciple)*100;
-    	SET @Gperc = ABS(@Prev_perc) - ABS(@Iperc);
+        SET @Check = 0;      
+
         SELECT @Check = COUNT(*) 
         FROM Analytics
         WHERE Month = (MONTH(GETDATE())) AND Year = (YEAR(GETDATE()));
  
         IF @Check = 0
-        	INSERT into Analytics values(MONTH(GETDATE()),YEAR(GETDATE()),@Cprinciple,@Cinterest,@Pperc,@Iperc);
+        	INSERT into Analytics values(MONTH(GETDATE()),YEAR(GETDATE()),@Cprinciple,@Cinterest,0,0);
         ELSE
-        	UPDATE Analytics set principle = @Cprinciple,interest = @Cinterest , Ppercent = @Pperc , Ipercent = @Iperc where month = (month(GETDATE())) AND year = YEAR(GETDATE());
+        	UPDATE Analytics set principle = @Cprinciple,interest = @Cinterest , Ppercent = 0 , Ipercent = 0 where month = (month(GETDATE())) AND year = YEAR(GETDATE());
 
-        UPDATE Dashboard set TotalLoans = @TCount , Tprinciple = @Tprinciple, Tinterest = @Tinterest , MonthlyLoans = @MCount , Mprinciple = @Cprinciple, Minterest = @Cinterest , Pincrement = @Pperc , Iincrement = @Iperc , MonthlyGrowth = @Gperc where Id =1;
+        UPDATE Dashboard set TotalLoans = @TCount , Tprinciple = @Tprinciple, Tinterest = @Tinterest , MonthlyLoans = @MCount , Mprinciple = @Cprinciple, Minterest = @Cinterest , PreviousLoans = @PCount , Printerest = @Pinterest , Prprinciple = @Pprinciple where Id =1;
 END";
 
 

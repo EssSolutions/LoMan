@@ -191,7 +191,7 @@ namespace LoMan.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Recover(string id, [Bind("Id,Name,Address,Phone,Asset,Principle,Interest,Rate,Amount,Idate,Rdate,Penalty,Times,Period,Status")] Loan loan,string Type)
+        public async Task<IActionResult> Recover(string id, [Bind("Id,Name,Address,Phone,Asset,Principle,Interest,Rate,Amount,Idate,Rdate,Penalty,Times,Period,Status")] Loan loan,string Type,float Penalty)
         {
             if (id != loan.Id)
             {
@@ -207,20 +207,22 @@ namespace LoMan.Controllers
                     recovery.Id = Guid.NewGuid().ToString();
                     recovery.Date = DateTime.Today;
                     recovery.Name = loan.Name;
+                    loan.Penalty = Penalty;
                     if (Type.Equals("Interest"))
                     {
-                        recovery.Interest = loan.Interest;
-                        loan.Status = "Interest Paid";
+                        recovery.Interest = loan.Interest + loan.Penalty;
+                        loan.Rdate = loan.Rdate.AddDays(loan.Period);
+                        loan.Status = "Pending";
 
                     }
                     else if (Type.Equals("Principle"))
                     {
-                        recovery.Principle = loan.Principle;
+                        recovery.Principle = loan.Principle + loan.Penalty;
                         loan.Status = "Principle Paid";
                     }
                     else if(Type.Equals("Complete"))
                     {
-                        recovery.Interest = loan.Interest;
+                        recovery.Interest = loan.Interest + loan.Penalty;
                         recovery.Principle = loan.Principle;
                         loan.Status = "Paid";
                     }
