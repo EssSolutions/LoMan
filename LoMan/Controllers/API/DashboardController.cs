@@ -25,9 +25,11 @@ namespace LoMan.Controllers.API
         public async Task<ActionResult<DashboardVM>> Get()
         {
             _ = await _db.Database.ExecuteSqlRawAsync("EXEC Set_Dashboard");
-            DashboardVM dashboardVM = new DashboardVM();
-            dashboardVM.Loans = _db.Loans.Where(l => l.Rdate == DateTime.Today).ToList();
-            dashboardVM.dashboard = _db.Dashboard.FirstOrDefault();
+            DashboardVM dashboardVM = new DashboardVM
+            {
+                Loans = _db.Loans.Where(l => l.Rdate == DateTime.Today).ToList(),
+                dashboard = _db.Dashboard.FirstOrDefault()
+            };
             return dashboardVM;
         }
     }

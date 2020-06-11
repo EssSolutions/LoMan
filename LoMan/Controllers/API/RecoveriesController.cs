@@ -82,8 +82,10 @@ namespace LoMan.Controllers.API
         [HttpPost]
         public async Task<ActionResult<Recoveries>> PostRecoveries(RecoveryApi recoveryApi)
         {
-            Recoveries recovery = new Recoveries();
-            recovery.Id = Guid.NewGuid().ToString();
+            Recoveries recovery = new Recoveries
+            {
+                Id = Guid.NewGuid().ToString()
+            };
             if (recoveryApi.Id != recoveryApi.loan.Id)
             {
                 return NotFound();

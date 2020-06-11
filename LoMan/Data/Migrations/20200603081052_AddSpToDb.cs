@@ -6,9 +6,7 @@ namespace LoMan.Data.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            var sp = @"DROP PROCEDURE [dbo].[Set_Dashboard]
-GO
-
+            var sp = @"
 /****** Object:  StoredProcedure [dbo].[Set_Dashboard]    Script Date: 03-06-2020 13:45:55 ******/
 SET ANSI_NULLS ON
 GO

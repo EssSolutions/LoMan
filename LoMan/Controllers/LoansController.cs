@@ -177,8 +177,10 @@ namespace LoMan.Controllers
             {
                 return NotFound();
             }
-            RecoveryVM recoveryVM = new RecoveryVM();
-            recoveryVM.loan = await _context.Loans.FindAsync(id);
+            RecoveryVM recoveryVM = new RecoveryVM
+            {
+                loan = await _context.Loans.FindAsync(id)
+            };
             if (recoveryVM.loan == null)
             {
                 return NotFound();
@@ -203,10 +205,12 @@ namespace LoMan.Controllers
                 try
                 {
                     loan = await _context.Loans.FindAsync(id);
-                    Recoveries recovery = new Recoveries();
-                    recovery.Id = Guid.NewGuid().ToString();
-                    recovery.Date = DateTime.Today;
-                    recovery.Name = loan.Name;
+                    Recoveries recovery = new Recoveries
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        Date = DateTime.Today,
+                        Name = loan.Name
+                    };
                     loan.Penalty = Penalty;
                     if (Type.Equals("Interest"))
                     {
