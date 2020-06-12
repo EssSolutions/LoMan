@@ -54,7 +54,14 @@ namespace LoMan.Controllers.API
             {
                 return BadRequest();
             }
-
+            if(loan.Rdate < DateTime.Today)              
+                        {
+                            loan.Status = "Pending";                        
+                        } 
+                        else
+                        {
+                            loan.Status = "Not Paid";
+                        } 
             _context.Entry(loan).State = EntityState.Modified;
 
             try

@@ -165,6 +165,14 @@ namespace LoMan.Controllers
             {
                 try
                 {
+                    if(loan.Rdate < DateTime.Today)              
+                    {
+                        loan.Status = "Pending";                        
+                    } 
+                    else
+                    {
+                        loan.Status = "Not Paid";
+                    } 
                     _context.Update(loan);
                     await _context.SaveChangesAsync();
                 }
@@ -230,7 +238,7 @@ namespace LoMan.Controllers
                     {
                         recovery.Interest = loan.Interest + loan.Penalty;
                         loan.Rdate = loan.Rdate.AddDays(loan.Period);
-                        loan.Status = "Pending";
+                        loan.Status = "Not Paid";
 
                     }
                     else if (Type.Equals("Principle"))
