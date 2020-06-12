@@ -23,6 +23,18 @@ namespace LoMan.Controllers
         public IActionResult Index()
         {
             _ = _db.Database.ExecuteSqlRaw("EXEC Set_Dashboard");
+            foreach (Loan item in _db.Loans)
+            {
+                if (item.Rdate == DateTime.Today)
+                {
+                    if (item.Status.Equals("Not Paid"))
+                    {
+                        item.Status = "Pending";                        
+                    }
+                    
+                }
+            }
+            _db.SaveChanges();
             DashboardVM dashboardVM = new DashboardVM
             {
                 Loans = _db.Loans.Where(l => l.Rdate == DateTime.Today).ToList(),
