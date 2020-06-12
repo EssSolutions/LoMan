@@ -68,7 +68,13 @@
                 }
                 else if (item.Status.Equals("Principle Paid"))
                 {
-                    <td class="badge badge-info -center">
+                    <td class="badge badge-primary -center">
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                }
+                else if (item.Status.Equals("Not Paid"))
+                {
+                    <td class="badge badge-info align-self-center">
                         @Html.DisplayFor(modelItem => item.Status)
                     </td>
                 }

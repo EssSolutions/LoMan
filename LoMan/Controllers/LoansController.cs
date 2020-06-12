@@ -79,7 +79,7 @@ namespace LoMan.Controllers
                     loan.Principle = Principle;
                     TimeSpan Diff = loan.Rdate.Subtract(loan.Idate);
                     loan.Period = Diff.Days;
-                    loan.Status = "Pending";
+                    loan.Status = "Not Paid";
                     _context.Add(loan);
                     await _context.SaveChangesAsync();
                     loan.Idate = loan.Idate.AddDays(Period);
@@ -110,7 +110,7 @@ namespace LoMan.Controllers
                 loan.Amount = loan.Principle + loan.Interest;
                 TimeSpan Period = loan.Rdate.Subtract(loan.Idate);
                 loan.Period = Period.Days;
-                loan.Status = "Pending";
+                loan.Status = "Not Paid";
                 loan.Times = 1;
                 _context.Add(loan);
                 await _context.SaveChangesAsync();
