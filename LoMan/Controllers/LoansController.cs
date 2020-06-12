@@ -23,13 +23,13 @@ namespace LoMan.Controllers
         // GET: Loans
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Loans.OrderBy(l => l.Name).ToListAsync());
+            return View(await _context.Loans.OrderBy(l => l.Idate).ToListAsync());
         }
 
         // GET: Loans/Pending
         public async Task<IActionResult> Pending()
         {
-            var PList = _context.Loans.Where(l => l.Status.Equals("Pending"));
+            var PList = _context.Loans.Where(l => l.Status.Equals("Pending")).OrderBy(l=> l.Idate);
             return View(await PList.ToListAsync());
         }
 
@@ -79,7 +79,14 @@ namespace LoMan.Controllers
                     loan.Principle = Principle;
                     TimeSpan Diff = loan.Rdate.Subtract(loan.Idate);
                     loan.Period = Diff.Days;
-                    loan.Status = "Not Paid";
+                    if (loan.Rdate < DateTime.Today)              
+                    {
+                        loan.Status = "Pending";                        
+                    } 
+                    else
+                    {
+                        loan.Status = "Not Paid";
+                    }                                 
                     _context.Add(loan);
                     await _context.SaveChangesAsync();
                     loan.Idate = loan.Idate.AddDays(Period);
@@ -110,7 +117,14 @@ namespace LoMan.Controllers
                 loan.Amount = loan.Principle + loan.Interest;
                 TimeSpan Period = loan.Rdate.Subtract(loan.Idate);
                 loan.Period = Period.Days;
-                loan.Status = "Not Paid";
+                if(loan.Rdate < DateTime.Today)              
+                    {
+                        loan.Status = "Pending";                        
+                    } 
+                    else
+                    {
+                        loan.Status = "Not Paid";
+                    }    
                 loan.Times = 1;
                 _context.Add(loan);
                 await _context.SaveChangesAsync();
@@ -188,7 +202,7 @@ namespace LoMan.Controllers
             return View(recoveryVM);
         }
 
-        // POST: Loans/Edit/5
+        // POST: Loans/Recover/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]

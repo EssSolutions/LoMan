@@ -23,7 +23,7 @@ namespace LoMan.Controllers
         // GET: Recoveries
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Recoveries.ToListAsync());
+            return View(await _context.Recoveries.OrderBy(r => r.Date).ToListAsync());
         }
 
         // GET: Recoveries/Details/5

@@ -27,7 +27,7 @@ namespace LoMan.Controllers.API
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Recoveries>>> GetRecoveries()
         {
-            return await _context.Recoveries.ToListAsync();
+            return await _context.Recoveries.OrderBy(r => r.Date).ToListAsync();
         }
 
         // GET: api/Recoveries/5

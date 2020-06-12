@@ -27,7 +27,7 @@ namespace LoMan.Controllers.API
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Loan>>> GetLoans()
         {
-            return await _context.Loans.OrderBy(l => l.Name).ToListAsync();
+            return await _context.Loans.OrderBy(l => l.Idate).ToListAsync();
         }
 
         // GET: api/Loans/5
@@ -99,7 +99,14 @@ namespace LoMan.Controllers.API
                         loanApi.loan.Principle = Principle;
                         TimeSpan Diff = loanApi.loan.Rdate.Subtract(loanApi.loan.Idate);
                         loanApi.loan.Period = Diff.Days;
-                        loanApi.loan.Status = "Pending";
+                        if(loanApi.loan.Rdate < DateTime.Today)              
+                        {
+                            loanApi.loan.Status = "Pending";                        
+                        } 
+                        else
+                        {
+                            loanApi.loan.Status = "Not Paid";
+                        } 
                         _context.Add(loanApi.loan);
                         await _context.SaveChangesAsync();
                         loanApi.loan.Idate = loanApi.loan.Idate.AddDays(Period);
@@ -112,7 +119,14 @@ namespace LoMan.Controllers.API
                     loanApi.loan.Amount = loanApi.loan.Principle + loanApi.loan.Interest;
                     TimeSpan Period = loanApi.loan.Rdate.Subtract(loanApi.loan.Idate);
                     loanApi.loan.Period = Period.Days;
-                    loanApi.loan.Status = "Pending";
+                    if(loanApi.loan.Rdate < DateTime.Today)              
+                        {
+                            loanApi.loan.Status = "Pending";                        
+                        } 
+                        else
+                        {
+                            loanApi.loan.Status = "Not Paid";
+                        } 
                     loanApi.loan.Times = 1;
                     _context.Add(loanApi.loan);
                     await _context.SaveChangesAsync();

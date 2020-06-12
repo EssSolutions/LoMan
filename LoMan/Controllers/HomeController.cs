@@ -25,7 +25,7 @@ namespace LoMan.Controllers
             _ = _db.Database.ExecuteSqlRaw("EXEC Set_Dashboard");
             foreach (Loan item in _db.Loans)
             {
-                if (item.Rdate == DateTime.Today)
+                if (item.Rdate < DateTime.Today)
                 {
                     if (item.Status.Equals("Not Paid"))
                     {
