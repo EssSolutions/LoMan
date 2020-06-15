@@ -89,7 +89,6 @@ namespace LoMan.Controllers
                     }                                 
                     _context.Add(loan);
                     await _context.SaveChangesAsync();
-                    loan.Idate = loan.Idate.AddDays(Period);
                 }
                 
                 return RedirectToAction(nameof(Index));
