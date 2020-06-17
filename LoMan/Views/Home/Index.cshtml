@@ -1,216 +1,307 @@
 ﻿@model LoMan.ViewModels.DashboardVM
-  @{
-        ViewData["Title"] = "Dashoard";
-   }
+@{
+    ViewData["Title"] = "Dashoard";
+    int i = 0,j = 0;
+}
 
-    <div class="container-fluid">
+<div class="container-fluid">
 
-        <br />
-        <div class="row">
-            <div class="col-md-12 text-white">
-                <h3>
-                    Analytics Dashboard
-                </h3>
-            </div>
+    <br />
+    <div class="row">
+        <div class="col-md-12 text-white">
+            <h3>
+                Analytics Dashboard
+            </h3>
         </div>
+    </div>
 
-        <br />
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card text-white bg-night-sky">
-                    <h5 class="card-header">
-                        Total No Of Loans
-                    </h5>
-                    <div class="card-body">
-                        <p class="card-text">
-                            @Model.dashboard.TotalLoans
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card text-white bg-arielle-smile">
-                    <h5 class="card-header">
-                        Total Principle
-                    </h5>
-                    <div class="card-body">
-                        <p class="card-text">
-                            @Model.dashboard.Tprinciple
-                        </p>
-                    </div>
-
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card text-white bg-grow-early">
-                    <h5 class="card-header">
-                        Total Interest
-                    </h5>
-                    <div class="card-body">
-                        <p class="card-text">
-                            @Model.dashboard.Tinterest
-                        </p>
-                    </div>
-
+    <br />
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card text-white bg-night-sky">
+                <h5 class="card-header">
+                    Total No Of Loans
+                </h5>
+                <div class="card-body">
+                    <p class="card-text">
+                        @Model.dashboard.TotalLoans
+                    </p>
                 </div>
             </div>
         </div>
-        <br />
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card text-white bg-royal">
-                    <h5 class="card-header">
-                        Total Loans Given Previous Month
-                    </h5>
-                    <div class="card-body">
-                        @Model.dashboard.PreviousLoans
-                    </div>
-
+        <div class="col-md-4">
+            <div class="card text-white bg-arielle-smile">
+                <h5 class="card-header">
+                    Total Principle
+                </h5>
+                <div class="card-body">
+                    <p class="card-text">
+                        @Model.dashboard.Tprinciple
+                    </p>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card text-white bg-malibu-beach">
-                    <h5 class="card-header ">
-                        Total Principle Recieved Previous Month
-                    </h5>
-                    <div class="card-body">
-                        @Model.dashboard.Prprinciple
-                    </div>
 
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card text-white bg-happy-itmeo">
-                    <h5 class="card-header">
-                        Total Interest Recieved Previous Month
-                    </h5>
-                    <div class="card-body">
-                        @Model.dashboard.Printerest
-                    </div>
-
-                </div>
             </div>
         </div>
-        <br />
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card text-white bg-midnight-bloom">
-                    <h5 class="card-header">
-                        Total Loans Given This Month
-                    </h5>
-                    <div class="card-body">
-                        <p class="card-text">
-                            @Model.dashboard.MonthlyLoans
-                        </p>
-                    </div>
-
+        <div class="col-md-4">
+            <div class="card text-white bg-grow-early">
+                <h5 class="card-header">
+                    Total Interest
+                </h5>
+                <div class="card-body">
+                    <p class="card-text">
+                        @Model.dashboard.Tinterest
+                    </p>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card text-white bg-happy-fisher">
-                    <h5 class="card-header">
-                        Total Principle Recieved This Month
-                    </h5>
-                    <div class="card-body">
-                        <p class="card-text">
-                            @Model.dashboard.Mprinciple
-                        </p>
-                    </div>
-
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card text-white bg-happy-green">
-                    <h5 class="card-header">
-                        Total Interest Recieved This Month
-                    </h5>
-                    <div class="card-body">
-                        <p class="card-text">
-                            @Model.dashboard.Minterest
-                        </p>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-        <br />
-        <div class="row">
-            <div class="col-md-12 ">
-                <div class="card text-white  bg-amy-crisp ">
-                    <h5 class="card-header">
-                        Today's Pending Loans
-                    </h5>
-                    <div class="card-body">
-                        <table class="table table-borderless " style=" border-collapse: separate;  border-spacing: 0 1em;">
-                            <thead>
-                                <tr>
-                                    <th>
-                                        #
-                                    </th>
-                                    <th>
-                                        Name
-                                    </th>
-                                    <th>
-                                        Issue Date
-                                    </th>
-                                    <th>
-                                        Status
-                                    </th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody class="text-dark">
-                                @foreach (Loan loan in @Model.Loans)
-                            {
-                                int i = 1;
-                                <tr>
-                                    <td>@i</td>
-                                    <td>@loan.Name</td>
-                                    <td>@loan.Idate</td>
-                                    @if (loan.Status.Equals("Pending"))
-                                    {
-                                    <td class="badge badge-danger -center">
-                                        @Html.DisplayFor(modelItem => loan.Status)
-                                    </td>
-                                    }
-                                    else if (loan.Status.Equals("Interest Paid"))
-                                    {
-                                    <td class="badge badge-warning -center">
-                                        @Html.DisplayFor(modelItem => loan.Status)
-                                    </td>
-                                    }
-                                    else if (loan.Status.Equals("Principle Paid"))
-                                    {
-                                    <td class="badge badge-info -center">
-                                        @Html.DisplayFor(modelItem => loan.Status)
-                                    </td>
-                                    }
-                                    else if (loan.Status.Equals("Paid"))
-                                    {
-                                    <td class="badge badge-success align-self-center">
-                                        @Html.DisplayFor(modelItem => loan.Status)
-                                    </td>
-                                    }
-
-                                    <td>
-                                        <a class="btn btn-secondary" asp-controller="Loans" asp-action="Recover" asp-route-id="@loan.Id">Recover</a>
-                                        <a class="btn btn-warning" asp-controller="Loans" asp-action="Edit" asp-route-id="@loan.Id">Edit</a>
-                                        <a class="btn btn-info" asp-controller="Loans" asp-action="Details" asp-route-id="@loan.Id">Details</a>
-                                        <a class="btn btn-danger" asp-controller="Loans" asp-action="Delete" asp-route-id="@loan.Id">Delete</a>
-                                    </td>
-                                </tr>
-
-                            }
-                            </tbody>
-                        </table>
-                    </div>
-
-                </div>
-
 
             </div>
         </div>
     </div>
+    <br />
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card text-white bg-royal">
+                <h5 class="card-header">
+                    Total Loans Given Previous Month
+                </h5>
+                <div class="card-body">
+                    @Model.dashboard.PreviousLoans
+                </div>
+
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-malibu-beach">
+                <h5 class="card-header ">
+                    Total Principle Recieved Previous Month
+                </h5>
+                <div class="card-body">
+                    @Model.dashboard.Prprinciple
+                </div>
+
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-happy-itmeo">
+                <h5 class="card-header">
+                    Total Interest Recieved Previous Month
+                </h5>
+                <div class="card-body">
+                    @Model.dashboard.Printerest
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card text-white bg-midnight-bloom">
+                <h5 class="card-header">
+                    Total Loans Given This Month
+                </h5>
+                <div class="card-body">
+                    <p class="card-text">
+                        @Model.dashboard.MonthlyLoans
+                    </p>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-happy-fisher">
+                <h5 class="card-header">
+                    Total Principle Recieved This Month
+                </h5>
+                <div class="card-body">
+                    <p class="card-text">
+                        @Model.dashboard.Mprinciple
+                    </p>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-happy-green">
+                <h5 class="card-header">
+                    Total Interest Recieved This Month
+                </h5>
+                <div class="card-body">
+                    <p class="card-text">
+                        @Model.dashboard.Minterest
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-sm-6 ">
+            <div class="card text-white  bg-amy-crisp ">
+                <h5 class="card-header">
+                    Today's Loans
+                </h5>
+                <div class="card-body">
+                    <table class="table table-borderless table-sm" style=" border-collapse: separate;  border-spacing: 0 1em;">
+                        <thead>
+                            <tr>
+                                
+                                <th>
+                                    Name
+                                </th>
+                                <th>
+                                    Issue Date
+                                </th>
+                                <th>
+                                    Status
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-dark">
+
+                            @foreach (Loan loan in @Model.TdLoans)
+                            {
+                                i++;
+                                <tr>
+                                    
+                                    <td>@loan.Name</td>
+                                    <td>@loan.Idate</td>
+                                    @if (loan.Status.Equals("Pending"))
+                                    {
+                                        <td class="badge badge-danger -center">
+                                            @Html.DisplayFor(modelItem => loan.Status)
+                                        </td>
+                                    }
+                                    else if (loan.Status.Equals("Interest Paid"))
+                                    {
+                                        <td class="badge badge-warning -center">
+                                            @Html.DisplayFor(modelItem => loan.Status)
+                                        </td>
+                                    }
+                                    else if (loan.Status.Equals("Principle Paid"))
+                                    {
+                                        <td class="badge badge-primary -center">
+                                            @Html.DisplayFor(modelItem => loan.Status)
+                                        </td>
+                                    }
+                                    else if (loan.Status.Equals("Not Paid"))
+                                    {
+                                        <td class="badge badge-info -center">
+                                            @Html.DisplayFor(modelItem => loan.Status)
+                                        </td>
+                                    }
+                                    else if (loan.Status.Equals("Paid"))
+                                    {
+                                        <td class="badge badge-success align-self-center">
+                                            @Html.DisplayFor(modelItem => loan.Status)
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td class="badge badge-danger -center">
+                                            Unknown Status
+                                        </td>
+                                    }
+                                <td>
+                                    <a class="btn btn-secondary btn-sm" asp-controller="Loans" asp-action="Recover" asp-route-id="@loan.Id">Recover</a>
+                                    <a class="btn btn-alternate btn-sm" asp-controller="Loans" asp-action="Details" asp-route-id="@loan.Id">Details</a>
+                                </td>
+                                </tr>
+
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+
+        </div>
+        <div class="col-sm-6 ">
+            <div class="card text-white  bg-amy-crisp ">
+                <h5 class="card-header">
+                    Tommorow's Loans
+                </h5>
+                <div class="card-body">
+                    <table class="table table-borderless table-sm " style=" border-collapse: separate;  border-spacing: 0 1em;">
+                        <thead>
+                            <tr>
+                                
+                                <th>
+                                    Name
+                                </th>
+                                <th>
+                                    Issue Date
+                                </th>
+                                <th>
+                                    Status
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-dark">
+
+                            @foreach (Loan loan in @Model.TmLoans)
+                            {
+                                j++;
+                                <tr>
+                                    
+                                    <td>@loan.Name</td>
+                                    <td>@loan.Idate</td>
+                                    @if (loan.Status.Equals("Pending"))
+                                    {
+                                        <td class="badge badge-danger -center">
+                                            @Html.DisplayFor(modelItem => loan.Status)
+                                        </td>
+                                    }
+                                    else if (loan.Status.Equals("Interest Paid"))
+                                    {
+                                        <td class="badge badge-warning -center">
+                                            @Html.DisplayFor(modelItem => loan.Status)
+                                        </td>
+                                    }
+                                    else if (loan.Status.Equals("Principle Paid"))
+                                    {
+                                        <td class="badge badge-primary -center">
+                                            @Html.DisplayFor(modelItem => loan.Status)
+                                        </td>
+                                    }
+                                    else if (loan.Status.Equals("Not Paid"))
+                                    {
+                                        <td class="badge badge-info -center">
+                                            @Html.DisplayFor(modelItem => loan.Status)
+                                        </td>
+                                    }
+                                    else if (loan.Status.Equals("Paid"))
+                                    {
+                                        <td class="badge badge-success align-self-center">
+                                            @Html.DisplayFor(modelItem => loan.Status)
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td class="badge badge-danger -center">
+                                            Unknown Status
+                                        </td>
+                                    }
+                                    <td>
+                                        <a class="btn btn-secondary btn-sm" asp-controller="Loans" asp-action="Recover" asp-route-id="@loan.Id">Recover</a>                                        
+                                        <a class="btn btn-alternate btn-sm" asp-controller="Loans" asp-action="Details" asp-route-id="@loan.Id">Details</a>                                        
+                                    </td>
+                                </tr>
+
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+</div>
 
 
 

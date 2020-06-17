@@ -6,30 +6,67 @@
 
 
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-12">
         <h1>List Of Pending Loans</h1>
     </div>
-    <div class="col-md-6">
+</div>
+<br />
+
+<div class="row">
+    <div class="col-md-2">
+        <select id="month" class="form-control">
+            <option value="0">Select Month</option>
+            <option value="1">January</option>
+            <option value="2">Febuary</option>
+            <option value="3">March</option>
+            <option value="4">April</option>
+            <option value="5">May</option>
+            <option value="6">June</option>
+            <option value="7">July</option>
+            <option value="8">August</option>
+            <option value="9">September</option>
+            <option value="10">October</option>
+            <option value="11">November</option>
+            <option value="12">December</option>
+        </select>
+    </div>
+    <div class="col-md-2">
+        <select id="year" class="form-control"></select>
+    </div>
+    <div class="col-md-2">
+        <button class="btn btn-secondary form-control text-white" id="filterBtn" value="Filter" />
+    </div>
+    <div class="col-md-3">
         <div class="form-group">
-            <input class="form-control" type="text" id="Search-Input" placeholder="Enter Name To Search" />
+            <select id="searchType" class="form-control">
+                <option value="">Select Search Type</option>
+                <option value="name">Name</option>
+                <option value="idate">Issue Date</option>
+                <option value="rdate">Return Date</option>
+            </select>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="form-group">
+            <input class="form-control" type="text" id="searchInput" placeholder="Enter Key To Search" />
         </div>
     </div>
 </div>
 <br />
-<table class="table bg-amy-crisp table-borderless" >
+<table class="table bg-amy-crisp table-borderless">
     <thead>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Amount)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Idate)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Rdate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Amount)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Status)
@@ -40,61 +77,61 @@
     <tbody id="table-body">
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Idate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Rdate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Amount)
+            </td>
 
-                <td>
-                    @Html.DisplayFor(modelItem => item.Amount)
+            @if (item.Status.Equals("Pending"))
+            {
+                <td class="badge badge-danger">
+                    @Html.DisplayFor(modelItem => item.Status)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Idate)
+            }
+            else if (item.Status.Equals("Interest Paid"))
+            {
+                <td class="badge badge-warning">
+                    @Html.DisplayFor(modelItem => item.Status)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Rdate)
+            }
+            else if (item.Status.Equals("Principle Paid"))
+            {
+                <td class="badge badge-primary -center">
+                    @Html.DisplayFor(modelItem => item.Status)
                 </td>
-                @if (item.Status.Equals("Pending"))
-                {
-                    <td class="badge badge-danger">
-                        @Html.DisplayFor(modelItem => item.Status)
-                    </td>
-                }
-                else if (item.Status.Equals("Interest Paid"))
-                {
-                    <td class="badge badge-warning">
-                        @Html.DisplayFor(modelItem => item.Status)
-                    </td>
-                }
-                else if (item.Status.Equals("Principle Paid"))
-                {
-                    <td class="badge badge-primary -center">
-                        @Html.DisplayFor(modelItem => item.Status)
-                    </td>
-                }
-                else if (item.Status.Equals("Not Paid"))
-                {
-                    <td class="badge badge-info align-self-center">
-                        @Html.DisplayFor(modelItem => item.Status)
-                    </td>
-                }
-                else if (item.Status.Equals("Paid"))
-                {
-                    <td class="badge badge-success">
-                        @Html.DisplayFor(modelItem => item.Status)
-                    </td>
-                }
+            }
+            else if (item.Status.Equals("Not Paid"))
+            {
+                <td class="badge badge-info align-self-center">
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+            }
+            else if (item.Status.Equals("Paid"))
+            {
+                <td class="badge badge-success">
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+            }
 
-                <td>
-                    <a class="btn btn-secondary" asp-action="Recover" asp-route-id="@item.Id">Recover</a>
-                    <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                    <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">Details</a>
-                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
-            </tr>
+            <td>
+                <a class="btn btn-secondary" asp-action="Recover" asp-route-id="@item.Id">Recover</a>
+                <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
         }
     </tbody>
 </table>
 @section Scripts {
-    <script  src="~/js/filter.js"></script>
+    <script src="~/js/filter.js"></script>
 }

@@ -37,8 +37,9 @@ namespace LoMan.Controllers
             _db.SaveChanges();
             DashboardVM dashboardVM = new DashboardVM
             {
-                Loans = _db.Loans.Where(l => l.Rdate == DateTime.Today).ToList(),
-                dashboard = _db.Dashboard.FirstOrDefault()
+                TdLoans = _db.Loans.Where(l => l.Rdate == DateTime.Today).ToList(),
+                dashboard = _db.Dashboard.FirstOrDefault(),
+                TmLoans = _db.Loans.Where(l => l.Rdate == DateTime.Today.AddDays(1)).ToList()
             };
             return View(dashboardVM);
         }
