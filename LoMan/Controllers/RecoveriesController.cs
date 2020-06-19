@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using LoMan.Data;
 using LoMan.Models;
 using LoMan.ViewModels;
+using System.Globalization;
 
 namespace LoMan.Controllers
 {
@@ -21,9 +22,33 @@ namespace LoMan.Controllers
         }
 
         // GET: Recoveries
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(DateTime MonthYear, string SearchType, string SearchInput)
         {
-            return View(await _context.Recoveries.OrderBy(r => r.Date).ToListAsync());
+            var List = from l in _context.Recoveries
+                       select l;
+            DateTime Test = new DateTime();
+            if (MonthYear != Test)
+            {
+                List = List.Where(l => l.Date.Month == MonthYear.Month && l.Date.Year == MonthYear.Year);
+
+            }
+            else if (!string.IsNullOrEmpty(SearchType))
+            {
+                if (SearchType.Equals("name"))
+                {
+                    List = List.Where(l => l.Name.Contains(SearchInput));
+
+                }
+                else if (SearchType.Equals("date"))
+                {
+                    CultureInfo provider = CultureInfo.InvariantCulture;
+                    DateTime SearchDate = DateTime.ParseExact(SearchInput, "dd-MM-yyyy", provider);
+                    List = List.Where(l => l.Date == SearchDate);
+
+                }                
+            }
+
+            return View(await List.OrderBy(l => l.Date).ToListAsync());
         }
 
         // GET: Recoveries/Details/5
@@ -92,7 +117,9 @@ namespace LoMan.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                var referer = Request.Headers["Referer"].ToString();
+                ViewBag.Referrer = referer;
+                return View();
             }
             return View(recoveries);
         }
@@ -123,7 +150,9 @@ namespace LoMan.Controllers
             var recoveries = await _context.Recoveries.FindAsync(id);
             _context.Recoveries.Remove(recoveries);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            var referer = Request.Headers["Referer"].ToString();
+            ViewBag.Referrer = referer;
+            return View();
         }
 
         private bool RecoveriesExists(string id)

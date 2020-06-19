@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using LoMan.Data;
 using LoMan.Models;
 using LoMan.ViewModels;
+using System.Globalization;
 
 namespace LoMan.Controllers
 {
@@ -21,16 +22,80 @@ namespace LoMan.Controllers
         }
 
         // GET: Loans
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(DateTime MonthYear, string SearchType, string SearchInput)
         {
-            return View(await _context.Loans.OrderBy(l => l.Idate).ToListAsync());
+            var List = from l in _context.Loans                        
+                        select l;
+            DateTime Test = new DateTime();
+            if (MonthYear != Test)
+            {
+                List = List.Where(l => l.Idate.Month == MonthYear.Month && l.Idate.Year == MonthYear.Year);
+
+            }
+            else if (!string.IsNullOrEmpty(SearchType))
+            {
+                if (SearchType.Equals("name"))
+                {
+                    List = List.Where(l => l.Name.Contains(SearchInput));
+
+                }
+                else if (SearchType.Equals("idate"))
+                {
+                    CultureInfo provider = CultureInfo.InvariantCulture;
+                    DateTime SearchDate = DateTime.ParseExact(SearchInput, "dd-MM-yyyy", provider);
+                    List = List.Where(l => l.Idate == SearchDate);
+
+                }
+                else if (SearchType.Equals("rdate"))
+                {
+                    CultureInfo provider = CultureInfo.InvariantCulture;
+                    DateTime SearchDate = DateTime.ParseExact(SearchInput, "dd-MM-yyyy", provider);
+                    List = List.Where(l => l.Rdate == SearchDate);
+
+                }
+            }
+
+            return View(await List.OrderBy(l => l.Idate).ToListAsync());
         }
 
         // GET: Loans/Pending
-        public async Task<IActionResult> Pending()
+        public async Task<IActionResult> Pending(DateTime MonthYear, string SearchType, string SearchInput)
         {
-            var PList = _context.Loans.Where(l => l.Status.Equals("Pending")).OrderBy(l=> l.Idate);
-            return View(await PList.ToListAsync());
+            var PList = from l in _context.Loans
+                        where l.Status.Equals("Pending")
+                        select l;
+            DateTime Test = new DateTime();
+            if (MonthYear != Test)
+            {
+                PList = PList.Where(l => l.Idate.Month == MonthYear.Month && l.Idate.Year == MonthYear.Year);
+                
+            }
+            else if (!string.IsNullOrEmpty(SearchType))
+            {
+                if (SearchType.Equals("name"))
+                {
+                    PList = PList.Where(l => l.Name.Contains(SearchInput));
+                   
+                }
+                else if (SearchType.Equals("idate"))
+                {
+                    CultureInfo provider = CultureInfo.InvariantCulture;
+                    DateTime SearchDate = DateTime.ParseExact(SearchInput, "dd-MM-yyyy", provider);
+                    PList = PList.Where(l => l.Idate == SearchDate);
+                    
+                }
+                else if (SearchType.Equals("rdate"))
+                {
+                    CultureInfo provider = CultureInfo.InvariantCulture;
+                    DateTime SearchDate = DateTime.ParseExact(SearchInput, "dd-MM-yyyy", provider);
+                    PList = PList.Where(l => l.Rdate == SearchDate);
+                   
+                }               
+            }
+
+            return View(await PList.OrderBy(l => l.Idate).ToListAsync());
+
+
         }
 
         // GET: Loans/Details/5
@@ -79,19 +144,21 @@ namespace LoMan.Controllers
                     loan.Principle = Principle;
                     TimeSpan Diff = loan.Rdate.Subtract(loan.Idate);
                     loan.Period = Diff.Days;
-                    if (loan.Rdate < DateTime.Today)              
+                    if (loan.Rdate < DateTime.Today)
                     {
-                        loan.Status = "Pending";                        
-                    } 
+                        loan.Status = "Pending";
+                    }
                     else
                     {
                         loan.Status = "Not Paid";
-                    }                                 
+                    }
                     _context.Add(loan);
                     await _context.SaveChangesAsync();
                 }
-                
-                return RedirectToAction(nameof(Index));
+
+                var referer = Request.Headers["Referer"].ToString();
+                ViewBag.Referrer = referer;
+                return View();
             }
             return View(loan);
         }
@@ -116,18 +183,20 @@ namespace LoMan.Controllers
                 loan.Amount = loan.Principle + loan.Interest;
                 TimeSpan Period = loan.Rdate.Subtract(loan.Idate);
                 loan.Period = Period.Days;
-                if(loan.Rdate < DateTime.Today)              
-                    {
-                        loan.Status = "Pending";                        
-                    } 
-                    else
-                    {
-                        loan.Status = "Not Paid";
-                    }    
+                if (loan.Rdate < DateTime.Today)
+                {
+                    loan.Status = "Pending";
+                }
+                else
+                {
+                    loan.Status = "Not Paid";
+                }
                 loan.Times = 1;
                 _context.Add(loan);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var referer = Request.Headers["Referer"].ToString();
+                ViewBag.Referrer = referer;
+                return View();
             }
             return View(loan);
         }
@@ -164,14 +233,14 @@ namespace LoMan.Controllers
             {
                 try
                 {
-                    if(loan.Rdate < DateTime.Today)              
+                    if (loan.Rdate < DateTime.Today)
                     {
-                        loan.Status = "Pending";                        
-                    } 
+                        loan.Status = "Pending";
+                    }
                     else
                     {
                         loan.Status = "Not Paid";
-                    } 
+                    }
                     _context.Update(loan);
                     await _context.SaveChangesAsync();
                 }
@@ -186,7 +255,9 @@ namespace LoMan.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                var referer = Request.Headers["Referer"].ToString();
+                ViewBag.Referrer = referer;
+                return View();
             }
             return View(loan);
         }
@@ -214,7 +285,7 @@ namespace LoMan.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Recover(string id, [Bind("Id,Name,Address,Phone,Asset,Principle,Interest,Rate,Amount,Idate,Rdate,Penalty,Times,Period,Status")] Loan loan,string Type,float Penalty)
+        public async Task<IActionResult> Recover(string id, [Bind("Id,Name,Address,Phone,Asset,Principle,Interest,Rate,Amount,Idate,Rdate,Penalty,Times,Period,Status")] Loan loan, string Type, float Penalty)
         {
             if (id != loan.Id)
             {
@@ -245,7 +316,7 @@ namespace LoMan.Controllers
                         recovery.Principle = loan.Principle + loan.Penalty;
                         loan.Status = "Principle Paid";
                     }
-                    else if(Type.Equals("Complete"))
+                    else if (Type.Equals("Complete"))
                     {
                         recovery.Interest = loan.Interest + loan.Penalty;
                         recovery.Principle = loan.Principle;
@@ -270,7 +341,9 @@ namespace LoMan.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                var referer = Request.Headers["Referer"].ToString();
+                ViewBag.Referrer = referer;
+                return View();
             }
             return View(loan);
         }
@@ -301,7 +374,9 @@ namespace LoMan.Controllers
             var loan = await _context.Loans.FindAsync(id);
             _context.Loans.Remove(loan);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            var referer = Request.Headers["Referer"].ToString();
+            ViewBag.Referrer = referer;
+            return View();
         }
 
         private bool LoanExists(string id)
