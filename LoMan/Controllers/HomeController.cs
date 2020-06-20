@@ -35,11 +35,14 @@ namespace LoMan.Controllers
                 }
             }
             _db.SaveChanges();
+            var LList = _db.Loans;
+            DateTime Today = DateTime.Today;
+            DateTime Tommorow = Today.AddDays(1);
             DashboardVM dashboardVM = new DashboardVM
             {
-                TdLoans = _db.Loans.Where(l => l.Rdate == DateTime.Today).ToList(),
+                TdLoans = LList.Where(l => l.Rdate == Today).ToList(),
                 dashboard = _db.Dashboard.FirstOrDefault(),
-                TmLoans = _db.Loans.Where(l => l.Rdate == DateTime.Today.AddDays(1)).ToList()
+                TmLoans = LList.Where(l => l.Rdate == Tommorow).ToList()
             };
             return View(dashboardVM);
         }

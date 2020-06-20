@@ -13,111 +13,116 @@
 <br />
 
 
-    <form asp-controller="Loans" asp-action="Pending" method="get">
-        <p>Month And Year :
-            <input  id="MonthYear" name="MonthYear" type="month">
-            <input  type="submit" value="Filter" />
-        </p>  
-    </form>
+<form asp-controller="Loans" asp-action="Pending" method="get">
+    <p>
+        Month And Year :
+        <input id="MonthYear" name="MonthYear" type="month">
+        <input type="submit" value="Filter" />
+    </p>
+</form>
 
 
-    <form asp-controller="Loans" asp-action="Pending" method="get">
-        <p> Search Type:
-            <select id="SearchType" name="SearchType" >
-                <option value="">Select Search Type</option>
-                <option value="name">Name</option>
-                <option value="idate">Issue Date</option>
-                <option value="rdate">Return Date</option>
-            </select>
-            <input type="text" id="SearchInput" name="SearchInput" placeholder="Enter Key To Search" />
-            <input type="submit" value="Search" />
-        </p>  
-    </form>
+<form asp-controller="Loans" asp-action="Pending" method="get">
+    <p>
+        Search Type:
+        <select id="SearchType" name="SearchType">
+            <option value="">Select Search Type</option>
+            <option value="name">Name</option>
+            <option value="idate">Issue Date</option>
+            <option value="rdate">Return Date</option>
+        </select>
+        <input type="text" id="SearchInput" name="SearchInput" placeholder="Enter Key To Search" />
+        <input type="submit" value="Search" />
+    </p>
+</form>
 
-    
-   
+
+
 
 
 <br />
-<table class="table bg-amy-crisp table-borderless">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Idate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Rdate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Amount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody id="table-body">
-        @foreach (var item in Model)
-        {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Idate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Rdate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Amount)
-            </td>
+<div class="row">
+    
+    <div class="card-body">
+        <table class="table bg-amy-crisp table-borderless">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Idate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Rdate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Amount)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Status)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="table-body">
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Idate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Rdate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Amount)
+                        </td>
 
-            @if (item.Status.Equals("Pending"))
-            {
-                <td class="badge badge-danger">
-                    @Html.DisplayFor(modelItem => item.Status)
-                </td>
-            }
-            else if (item.Status.Equals("Interest Paid"))
-            {
-                <td class="badge badge-warning">
-                    @Html.DisplayFor(modelItem => item.Status)
-                </td>
-            }
-            else if (item.Status.Equals("Principle Paid"))
-            {
-                <td class="badge badge-primary -center">
-                    @Html.DisplayFor(modelItem => item.Status)
-                </td>
-            }
-            else if (item.Status.Equals("Not Paid"))
-            {
-                <td class="badge badge-info align-self-center">
-                    @Html.DisplayFor(modelItem => item.Status)
-                </td>
-            }
-            else if (item.Status.Equals("Paid"))
-            {
-                <td class="badge badge-success">
-                    @Html.DisplayFor(modelItem => item.Status)
-                </td>
-            }
+                        @if (item.Status.Equals("Pending"))
+                        {
+                            <td class="badge badge-danger">
+                                @Html.DisplayFor(modelItem => item.Status)
+                            </td>
+                        }
+                        else if (item.Status.Equals("Interest Paid"))
+                        {
+                            <td class="badge badge-warning">
+                                @Html.DisplayFor(modelItem => item.Status)
+                            </td>
+                        }
+                        else if (item.Status.Equals("Principle Paid"))
+                        {
+                            <td class="badge badge-primary -center">
+                                @Html.DisplayFor(modelItem => item.Status)
+                            </td>
+                        }
+                        else if (item.Status.Equals("Not Paid"))
+                        {
+                            <td class="badge badge-info align-self-center">
+                                @Html.DisplayFor(modelItem => item.Status)
+                            </td>
+                        }
+                        else if (item.Status.Equals("Paid"))
+                        {
+                            <td class="badge badge-success">
+                                @Html.DisplayFor(modelItem => item.Status)
+                            </td>
+                        }
 
-            <td>
-                <a class="btn btn-secondary" asp-action="Recover" asp-route-id="@item.Id">Recover</a>
-                <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">Details</a>
-                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-        }
-    </tbody>
-</table>
-@section Scripts {
-    @*<script src="~/js/filter.js"></script>*@
-}
+                        <td>
+                            <a class="btn btn-secondary" asp-action="Recover" asp-route-id="@item.Id">Recover</a>
+                            <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                            <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                            <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>

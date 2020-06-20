@@ -156,9 +156,7 @@ namespace LoMan.Controllers
                     await _context.SaveChangesAsync();
                 }
 
-                var referer = Request.Headers["Referer"].ToString();
-                ViewBag.Referrer = referer;
-                return View();
+                return RedirectToPage("Index","Home");
             }
             return View(loan);
         }
@@ -208,13 +206,14 @@ namespace LoMan.Controllers
             {
                 return NotFound();
             }
-
-            var loan = await _context.Loans.FindAsync(id);
-            if (loan == null)
+            LoanVM loanVM = new LoanVM();
+            loanVM.loan = await _context.Loans.FindAsync(id);
+            if (loanVM.loan == null)
             {
                 return NotFound();
             }
-            return View(loan);
+            loanVM.PreviousUrl = Request.Headers["Referer"].ToString();             
+            return View(loanVM);
         }
 
         // POST: Loans/Edit/5
@@ -222,7 +221,7 @@ namespace LoMan.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,Name,Address,Phone,Asset,Principle,Interest,Rate,Amount,Idate,Rdate,Penalty,Times,Period,Status")] Loan loan)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,Name,Address,Phone,Asset,Principle,Interest,Rate,Amount,Idate,Rdate,Penalty,Times,Period,Status")] Loan loan,string PreviousUrl)
         {
             if (id != loan.Id)
             {
@@ -255,9 +254,8 @@ namespace LoMan.Controllers
                         throw;
                     }
                 }
-                var referer = Request.Headers["Referer"].ToString();
-                ViewBag.Referrer = referer;
-                return View();
+                
+                return Redirect(PreviousUrl);
             }
             return View(loan);
         }
@@ -277,6 +275,7 @@ namespace LoMan.Controllers
             {
                 return NotFound();
             }
+            recoveryVM.PreviousUrl = Request.Headers["Referer"].ToString();
             return View(recoveryVM);
         }
 
@@ -285,7 +284,7 @@ namespace LoMan.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Recover(string id, [Bind("Id,Name,Address,Phone,Asset,Principle,Interest,Rate,Amount,Idate,Rdate,Penalty,Times,Period,Status")] Loan loan, string Type, float Penalty)
+        public async Task<IActionResult> Recover(string id, [Bind("Id,Name,Address,Phone,Asset,Principle,Interest,Rate,Amount,Idate,Rdate,Penalty,Times,Period,Status")] Loan loan, string Type, float Penalty,string PreviousUrl)
         {
             if (id != loan.Id)
             {
@@ -341,9 +340,7 @@ namespace LoMan.Controllers
                         throw;
                     }
                 }
-                var referer = Request.Headers["Referer"].ToString();
-                ViewBag.Referrer = referer;
-                return View();
+                return Redirect(PreviousUrl);
             }
             return View(loan);
         }
@@ -355,28 +352,27 @@ namespace LoMan.Controllers
             {
                 return NotFound();
             }
-
-            var loan = await _context.Loans
+            LoanVM loanVM = new LoanVM();
+            loanVM.loan = await _context.Loans
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (loan == null)
+            loanVM.PreviousUrl = Request.Headers["Referer"].ToString();
+            if (loanVM.loan == null)
             {
                 return NotFound();
             }
 
-            return View(loan);
+            return View(loanVM);
         }
 
         // POST: Loans/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
+        public async Task<IActionResult> DeleteConfirmed(string id,string PreviousUrl)
         {
             var loan = await _context.Loans.FindAsync(id);
             _context.Loans.Remove(loan);
-            await _context.SaveChangesAsync();
-            var referer = Request.Headers["Referer"].ToString();
-            ViewBag.Referrer = referer;
-            return View();
+            await _context.SaveChangesAsync();            
+            return Redirect(PreviousUrl);
         }
 
         private bool LoanExists(string id)

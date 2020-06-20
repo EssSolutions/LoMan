@@ -78,13 +78,14 @@ namespace LoMan.Controllers
             {
                 return NotFound();
             }
-
-            var recoveries = await _context.Recoveries.FindAsync(id);
-            if (recoveries == null)
+            RecoveriesVM recoveriesVM = new RecoveriesVM();
+            recoveriesVM.recoveries = await _context.Recoveries.FindAsync(id);
+            recoveriesVM.PreviousUrl = Request.Headers["Referer"].ToString();
+            if (recoveriesVM.recoveries == null)
             {
                 return NotFound();
             }
-            return View(recoveries);
+            return View(recoveriesVM);
         }
 
         // POST: Recoveries/Edit/5
@@ -92,7 +93,7 @@ namespace LoMan.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,Name,Date,Principle,Interest")] Recoveries recoveries)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,Name,Date,Principle,Interest")] Recoveries recoveries,string PreviousUrl)
         {
             if (id != recoveries.Id)
             {
@@ -117,9 +118,7 @@ namespace LoMan.Controllers
                         throw;
                     }
                 }
-                var referer = Request.Headers["Referer"].ToString();
-                ViewBag.Referrer = referer;
-                return View();
+                return Redirect(PreviousUrl);
             }
             return View(recoveries);
         }

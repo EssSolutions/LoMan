@@ -32,52 +32,55 @@
         <input type="submit" value="Search" />
     </p>
 </form>
-<table class="table table-borderless bg-amy-crisp">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Date)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Principle)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Interest)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody id="table-body">
-        @foreach (var item in Model)
-        {
-            @if (!item.Name.Equals("Except"))
-            {
+<br />
+<div class="row">
+    
+    <div class="card-body">
+        <table class="table table-borderless bg-amy-crisp">
+            <thead>
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Date)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Principle)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Interest)
-                    </td>
-                    <td>
-                        <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                    </td>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Date)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Principle)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Interest)
+                    </th>
+                    <th></th>
                 </tr>
-            }
-        }
-    </tbody>
-</table>
-@section Scripts {
-    <script src="~/js/filter.js"></script>
-}
+            </thead>
+            <tbody id="table-body">
+                @foreach (var item in Model)
+                {
+                    @if (!item.Name.Equals("Except"))
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Date)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Principle)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Interest)
+                            </td>
+                            <td>
+                                <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                                <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
