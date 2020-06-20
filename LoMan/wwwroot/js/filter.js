@@ -85,16 +85,40 @@ function Search() {
 		}
 	}
 	else if (filter === "rdate") {
-		searchValue = input.value;
+		let searchValue = new Date(`${input}`);
+		let dd1 = searchValue.getDate();
+		let mm1 = searchValue.getMonth() + 1;
+		//January is 0!
+		const yyyy1 = searchValue.getFullYear();
+		if (dd1 < 10) {
+			dd1 = '0' + dd1
+		}
+		if (mm1 < 10) {
+			mm1 = '0' + mm1
+		}
+		searchValue = yyyy1 + '-' + mm1 + '-' + dd1;
 		for (i = 0; i < tr.length; i++) {
 			td = tr[i].getElementsByTagName("td")[2];
 			if (td) {
-				txtValue = td.value;
-				if (txtValue == searchValue) {
+				console.log(td);
+				let txtValue = new Date(`${td.innerHTML}`);
+
+				let dd2 = txtValue.getDate();
+				let mm2 = txtValue.getMonth() + 1;
+				//January is 0!
+				const yyyy2 = txtValue.getFullYear();
+				if (dd2 < 10) {
+					dd2 = '0' + dd2
+				}
+				if (mm2 < 10) {
+					mm2 = '0' + mm2
+				}
+				txtValue = yyyy2 + '-' + mm2 + '-' + dd2;				
+				if (txtValue === searchValue) {				
 					tr[i].style.display = "";
 				}
 				else {
-					tr[i].style.display = "none";
+					tr[i].style.display = "none";					
 				}
 			}
 		}

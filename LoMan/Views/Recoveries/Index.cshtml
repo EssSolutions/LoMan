@@ -28,16 +28,37 @@
             <option value="name">Name</option>
             <option value="date">Date</option>            
         </select>
+
         <input type="text" id="SearchInput" name="SearchInput" placeholder="Enter Key To Search" />
         <input type="submit" value="Search" />
     </p>
 </form>
 <br />
-<div class="row">
-    
-    <div class="card-body">
-        <table class="table table-borderless bg-amy-crisp">
-            <thead>
+
+<table class="table table-borderless bg-amy-crisp">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Principle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Interest)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody id="table-body">
+        @foreach (var item in Model)
+        {
+            @if (!item.Name.Equals("Except"))
+            {
+
                 <tr>
                     <th>
                         @Html.DisplayNameFor(model => model.Name)
