@@ -15,5 +15,5 @@
 
 ## Dev
 
-Built with Asp.Net Core 3.1
-Database is Sql Server 2016 Express Edition 
+- Built with Asp.Net Core 3.1
+- Database is Sql Server 2016 Express Edition 
