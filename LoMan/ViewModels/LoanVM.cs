@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace LoMan.ViewModels
 {
-    public class RecoveryVM
+    public class LoanVM
     {
         public Loan loan { get; set; }
-        public string Type { get; set; }
-        public float Penalty { get; set; }
         public string PreviousUrl { get; set; }
     }
 }

@@ -103,10 +103,11 @@
             <label class="col-md-2" asp-for="Penalty">
                 Penalty
             </label>
-            <input class="col-md-4" type="number" asp-for="Penalty" value="0" />                        
+            <input class="col-md-4" type="number" asp-for="Penalty" value="0" />
         </div>
-        
+
         <input type="hidden" asp-for="loan.Id" />
+        <input type="hidden" asp-for="PreviousUrl" />
         <input type="submit" value="Recover" class="btn btn-secondary" />
         <a class="btn btn-primary" asp-action="Index">Back to List</a>
     </form>
