@@ -4,6 +4,7 @@ using LoMan.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
@@ -22,27 +23,11 @@ namespace LoMan.Controllers
 
         public IActionResult Index()
         {
-            _ = _db.Database.ExecuteSqlRaw("EXEC Set_Dashboard");
-            foreach (Loan item in _db.Loans)
-            {
-                if (item.Rdate < DateTime.Today)
-                {
-                    if (item.Status.Equals("Not Paid"))
-                    {
-                        item.Status = "Pending";                        
-                    }
-                    
-                }
-            }
-            _db.SaveChanges();
-            var LList = _db.Loans;
-            DateTime Today = DateTime.Today;
-            DateTime Tommorow = Today.AddDays(1);
             DashboardVM dashboardVM = new DashboardVM
             {
-                TdLoans = LList.Where(l => l.Rdate == Today).ToList(),
-                dashboard = _db.Dashboard.FirstOrDefault(),
-                TmLoans = LList.Where(l => l.Rdate == Tommorow).ToList()
+                TdLoans = new List<Loan>(),
+                TmLoans = new List<Loan>(),
+                dashboard = new Dashboard()
             };
             return View(dashboardVM);
         }
