@@ -33,4 +33,4 @@ jobs:
     # Your Heroku App Name
             app_name: finance-loman
     # Dokerfile path
-            dockerfile_path: ./LoMan/Dockerfile
+            dockerfile_path: .
