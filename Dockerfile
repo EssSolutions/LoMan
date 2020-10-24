@@ -12,4 +12,4 @@ FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
 WORKDIR /app
 EXPOSE 80
 COPY --from=build-env /app/out .
-CMD ASPNETCORE_URLS=http://*:$PORT dotnet InterScOM.dll
+CMD ASPNETCORE_URLS=http://*:$PORT dotnet LoMan.dll
